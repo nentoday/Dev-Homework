@@ -1,1 +1,0 @@
-DATABASE_URL="postgresql://postgres:21012005@localhost:5432/supermarket"
