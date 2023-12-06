@@ -1,11 +1,64 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// schema.prisma
 
-generator client {
-  provider = "prisma-client-js"
+// Define the Product table
+model Product {
+  id           Int            @id @default(autoincrement())
+  name         String
+  category     Category
+  amount       Int
+  price        Float
+  ProductOrder ProductOrder[]
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+// Enum for product category
+enum Category {
+  ELECTRONICS
+  CLOTHING
+  GROCERIES
+  // Add more categories as needed
+}
+
+// Define the Customer table
+model Customer {
+  id         Int      @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  middleName String?
+  email      String   @unique
+  birthDate  DateTime
+  Order      Order[]
+}
+
+// Define the Employee table
+model Employee {
+  id         Int     @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  middleName String?
+  position   String
+  orders     Order[] // Add this line to establish the relation
+}
+
+// Define the Order table
+model Order {
+  id           Int            @id @default(autoincrement())
+  employeeId   Int
+  employee     Employee       @relation(fields: [employeeId], references: [id])
+  customerId   Int
+  customer     Customer       @relation(fields: [customerId], references: [id])
+  orderAddress String
+  deliveryCost Float
+  orderDate    DateTime       @default(now())
+  products     ProductOrder[]
+}
+
+// Define the ProductOrder table (for many-to-many relationship between Order and Product)
+model ProductOrder {
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  amount    Int
+
+  @@id([orderId, productId])
 }
