@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { EmployeeException } from './employee.exception';
+import { EmployeeUpdateDto } from './dto/employee-update.dto';
 
 @Injectable()
 export class EmployeesService {
@@ -8,7 +9,7 @@ export class EmployeesService {
     { id: '2', firstName: 'Jane', lastName: 'Smith', position: 'Developer' },
   ];
 
-  updateEmployee(employeeId: string, data: any): any {
+  updateEmployee(employeeId: string, data: EmployeeUpdateDto): any {
     const employee = this.employees.find((emp) => emp.id === employeeId);
     if (employee) {
       Object.assign(employee, data);

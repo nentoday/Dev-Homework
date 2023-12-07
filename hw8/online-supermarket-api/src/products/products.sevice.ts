@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ProductCreateDto } from './dto/product-create.dto';
 
 @Injectable()
 export class ProductsService {
@@ -23,7 +24,7 @@ export class ProductsService {
     return { products: this.products };
   }
 
-  createProduct(productData: any): any {
+  createProduct(productData: ProductCreateDto): any {
     const productId = `product${this.products.length + 1}`;
 
     const newProduct = { id: productId, ...productData };
@@ -32,5 +33,4 @@ export class ProductsService {
 
     return { message: 'Product created successfully', product: newProduct };
   }
-
 }

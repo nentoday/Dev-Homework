@@ -1,5 +1,6 @@
-import { Controller, Patch, Param, Body } from '@nestjs/common';
+import { Controller, Patch, Param, Body, ValidationPipe } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
+import { EmployeeUpdateDto } from './dto/employee-update.dto';
 
 @Controller('employees')
 export class EmployeesController {
@@ -8,16 +9,8 @@ export class EmployeesController {
   @Patch(':employeeId')
   updateEmployee(
     @Param('employeeId') employeeId: string,
-    @Body('firstName') firstName: string,
-    @Body('lastName') lastName: string,
-    @Body('middleName') middleName: string,
-    @Body('position') position: string,
+    @Body(new ValidationPipe()) employeeUpdateDto: EmployeeUpdateDto,
   ): any {
-    return this.employeesService.updateEmployee(employeeId, {
-      firstName,
-      lastName,
-      middleName,
-      position,
-    });
+    return this.employeesService.updateEmployee(employeeId, employeeUpdateDto);
   }
 }
